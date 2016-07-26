@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Andy's Shitpost</title>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="blogstyle.css">
+</head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+	function like(target_id) {
+		console.log("Gogo");
+    	var stuff = $('#dat').find('#button_'+target_id).innerHTML;
+    	console.log(target_id);
+    }
+	 $(document).ready(function() {
+	 	
+	 	$.ajax({
+			method: "GET",
+			url: "main",
+			data: { },
+		}).done(function( msg ) {
+			console.log(msg);
+			for(var i = 0; i < msg.length; i++){
+				var dataContent = new String(JSON.stringify(msg[i]));
+				var dataCutOff = dataContent.indexOf(',') + 9;
+				dataContent = dataContent.substring(dataCutOff);
+				var beginCutOff = dataContent.indexOf(':');
+				dataContent = dataContent.substring(beginCutOff + 1, dataContent.indexOf("}") - 1);
+				
+				var usrm = dataContent.substring(1, dataContent.indexOf(',') - 1);
+				var comments = dataContent.substring(dataContent.indexOf(':') + 2, dataContent.length);
+				var id = "id"+i;
+				
+				//console.log(usrm);
+				 $("#dat").append("<div class='panel panel-default' ><div class='panel-body' id='button_"+ id + "'><h1>" + usrm + "</h1><hr><h4>" + comments);
+				//console.log(comments);
+			}
+    	});
+    	$("#submit").click(function(){
+    		var json = {};
+    		json.username = document.getElementById("username").value;
+    		json.comments = document.getElementById("comment").value;
+        	$.ajax({
+				type: 'POST',
+				data: JSON.stringify(json),
+				contentType: 'application/json',
+                url: 'post',						
+                success: function(data) {
+                	console.log('success');
+                    console.log(JSON.stringify(json));
+    			}
+    		});
+    		alert("Accepted comment... refresh page for effect");
+    	});
+    	
+    });
+</script>
+<body>
+
+	<div id="cf">
+    	<!--<img src="https://i.ytimg.com/vi/kqUR3KtWbTk/maxresdefault.jpg" id="banner-bottom">!-->
+    	<!--<img src="http://www.richmondinstitute.com/wp-content/uploads/2013/01/coffee-banner-2.jpg" id="banner-top">!-->
+  	</div>
+	
+	<div class="container">
+		<div class="jumbotron">
+		<h1>Andy's shitpost!</h1>
+		<h4>Post random stuff anonymously!</h4>
+		<h3>JUST A DEMO WEBSITE!!! ITS FOR SCHOOL!!! Also refresh the page 2 times to see your post.</h3>
+		</div>
+		<div id="dat">
+			<div class='panel panel-default'><div class='panel-body'> <textarea rows="2" cols="30" id="username">Enter username</textarea> <hr> <textarea rows="4" cols="50" id="comment">Enter comments</textarea> <hr><button type="button" id="submit">Submit</button></div></div>			
+		</div>
+	</div>
+</body>
+</html>
