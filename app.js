@@ -7,7 +7,6 @@ var http = require('http').Server(app);
 var url = "mongodb://squiva:kalaloch@ds029725.mlab.com:29725/db_sm_two";
 var dta = [];
 
-var port = Number(process.env.port) || 3000;
 app.set('port', (process.env.PORT || 3000));
 
 app.use(bodyParser.urlencoded());
