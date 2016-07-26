@@ -4,7 +4,7 @@ var assert = require('assert');
 var app = require('express')();
 var http = require('http').Server(app);
 
-var url = "mongodb://squiva:kalaloch@ds029725.mlab.com:29725/db_sm_two";
+var url = "mongodb://localhost:27017/blogLoginNew";
 var dta = [];
 
 app.set('port', (process.env.PORT || 3000));
